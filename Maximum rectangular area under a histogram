@@ -1,0 +1,49 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+long long getMaxArea(long long arr[], int n) {
+    stack<int> s;
+    vector<long long> left(n), right(n);
+
+    // Fill the left vector with indexes of previous smaller elements
+    for (int i = 0; i < n; i++) {
+        while (!s.empty() && arr[s.top()] >= arr[i]) {
+            s.pop();
+        }
+        left[i] = (s.empty()) ? -1 : s.top();
+        s.push(i);
+    }
+
+    // Clear the stack for the next phase
+    while (!s.empty()) {
+        s.pop();
+    }
+
+    // Fill the right vector with indexes of next smaller elements
+    for (int i = n - 1; i >= 0; i--) {
+        while (!s.empty() && arr[s.top()] >= arr[i]) {
+            s.pop();
+        }
+        right[i] = (s.empty()) ? n : s.top();
+        s.push(i);
+    }
+
+    // Calculate the maximum area
+    long long maxArea = 0;
+    for (int i = 0; i < n; i++) {
+        long long width = right[i] - left[i] - 1;
+        maxArea = max(maxArea, arr[i] * width);
+    }
+
+    return maxArea;
+}
+
+int main() {
+    long long arr[] = {6, 2, 5, 4, 1, 5, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout << "Maximum Area: " << getMaxArea(arr, n) << endl;
+    return 0;
+}
+
