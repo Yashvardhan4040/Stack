@@ -1,0 +1,25 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+void StockSpan(int arr[], int n)
+{
+    stack<int>s;
+    s.push(0);
+    cout<<1<<" ";
+    for(int i=1;i<n;i++)
+    {
+        int j;
+        while(s.empty()==false&& arr[s.top()]<=arr[i])
+        s.pop();
+        int span=s.empty()==true?i+1:i-s.top();
+        cout<<span<<" ";
+        s.push(i);
+    }
+}
+int main()
+{
+    int arr[]={18,12,13,14,11,16};
+    int n=6;
+    StockSpan(arr,n);
+    return 0; 
+}
